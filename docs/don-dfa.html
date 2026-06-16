@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Don's conjecture for standardized DFAs — Iterative LLM Math</title>
+<meta name="description" content="Exact enumeration and bound-checking for Don's conjecture on standardized completely reachable DFAs. Verified for all n ≤ 8."/>
+<meta name="color-scheme" content="dark light"/>
+<link rel="stylesheet" href="assets/styles.css"/>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <p class="eyebrow">Dossier 02 · Combinatorial track</p>
+  <h1>Don's conjecture for standardized DFAs</h1>
+  <p class="lede">In an n-state completely reachable automaton, can every k-element subset of states be
+  reached by a word of length ≤ <code>n(n−k)</code>? For <strong>standardized</strong> DFAs this is
+  <strong>open</strong>; Zhu proved only the weaker <code>n(n−k)+n−1</code>.</p>
+</div></header>
+
+<main class="wrap">
+  <div class="callout">
+    <strong>Status: open conjecture.</strong> This page reports exact enumeration, an independent
+    reaching-word verifier, and a bounded counterexample search — <em>not</em> a proof.
+  </div>
+
+  <h2>Setup</h2>
+  <ul>
+    <li><strong>Image action.</strong> A word w acts on the whole state set: <code>Q·w = {δ(q,w) : q ∈ Q}</code>.
+      A subset S has a <em>reaching word</em> w if <code>Q·w = S</code>.</li>
+    <li><strong>Completely reachable (CRA).</strong> Every non-empty subset has a reaching word.</li>
+    <li><strong>Standardized</strong> (Casas–Volkov normal form). <code>b</code> is the cycle
+      <code>q ↦ q+1 (mod n)</code>; <code>a</code> is a deficiency-1 map with <code>excl(a) = {0}</code>
+      and <code>dupl(a) = {a(0)}</code> (exactly one merge); and the automaton is CRA.</li>
+    <li><strong>Don's conjecture (open):</strong> reaching word of length ≤ <code>n(n−k)</code>.
+      <strong>Zhu (proved):</strong> ≤ <code>n(n−k)+n−1</code>.</li>
+  </ul>
+
+  <h2>What was built</h2>
+  <ul>
+    <li><strong>Exact enumerator</strong> of all standardized CRA DFAs (the normal form, filtered to CRA
+      by an exact subset-lattice BFS).</li>
+    <li><strong>Shortest-reaching-word BFS</strong> over the 2ⁿ subsets (bitmask-encoded).</li>
+    <li><strong>Independent verifier</strong> (separate module) that re-derives the image action and
+      checks an explicit reaching word reaches its subset — the sole arbiter.</li>
+    <li><strong>Bound checks</strong> for Don's <code>n(n−k)</code> and Zhu's <code>n(n−k)+n−1</code>.</li>
+  </ul>
+
+  <h2>Verified result</h2>
+  <div class="stat-row">
+    <div class="stat"><div class="n">n ≤ 8</div><div class="l">every standardized CRA DFA exhaustively checked</div></div>
+    <div class="stat"><div class="n">39,164</div><div class="l">standardized CRA DFAs (n = 3…8)</div></div>
+    <div class="stat"><div class="n">0</div><div class="l">Don-bound violations (the open conjecture holds)</div></div>
+    <div class="stat"><div class="n">0</div><div class="l">Zhu-bound violations (proved theorem, sanity ✓)</div></div>
+  </div>
+  <p><strong>Don's conjecture holds for every standardized completely reachable DFA with n ≤ 8</strong>,
+  and the bound <code>n(n−k)</code> is <strong>tight</strong> — achieved with equality but never exceeded.
+  Concrete certificate (n=5, <code>a=(1,1,2,3,4)</code>, <code>b=(1,2,3,4,0)</code>): reaching the
+  singleton <code>{0}</code> needs the shortest word
+  <code>abbbbabbbbabbbbabbbb</code> of length <code>20 = 5·(5−1) = n(n−k)</code> — independently verified.</p>
+  <p class="muted">Full run:
+  <a href="https://github.com/HaleMarshall/iterative-llm-math/blob/main/problems/don_dfa/results/don_dfa_results.json">don_dfa_results.json</a>.
+  16 tests cross-check the BFS lengths against explicit verified reaching words.</p>
+
+  <h2>Where this leaves the problem</h2>
+  <p>The open conjecture is confirmed on the full standardized family up to n=8, with the extremal
+  (bound-achieving) instances exhibited and certified. The natural next step is pushing n further with a
+  smarter enumerator and mining the extremal DFAs for a structural pattern — short of the (open)
+  conjecture itself.</p>
+
+  <a class="back" href="index.html">← all problems</a>
+</main>
+<footer class="site"><div class="wrap"><p>Don's conjecture · exact enumeration · open problem, verified for n ≤ 8</p></div></footer>
+</body>
+</html>

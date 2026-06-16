@@ -28,7 +28,7 @@ Non-negotiable rules carried from the source document:
 | # | Problem | Status |
 |---|---------|--------|
 | 01 | Erdős–Straus conjecture (`4/n = 1/x+1/y+1/z`) | ✅ complete: checker + solver + **prime reduction** + Mordell-frontier analysis; all n ≤ 10⁶ verified |
-| 02 | Don's conjecture for standardized completely reachable DFAs | ⏳ planned (next) |
+| 02 | Don's conjecture for standardized completely reachable DFAs | ✅ complete: exact enumeration + independent verifier; Don's bound verified (tight) for all n ≤ 8 (39,164 DFAs, 0 violations) |
 | 03 | Odd covering systems with distinct odd moduli | ⏳ planned |
 | 04 | Optimal Golomb rulers | ⏳ planned |
 | 05 | Even Barker sequences | ⏳ planned |

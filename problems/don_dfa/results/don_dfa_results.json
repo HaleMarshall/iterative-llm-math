@@ -1,0 +1,213 @@
+{
+  "problem": "Don's conjecture for standardized completely reachable DFAs",
+  "status": "OPEN for standardized DFAs. This is exact bounded verification + a counterexample search, NOT a proof.",
+  "definitions": {
+    "subset_action": "image: Q.w = {delta(q,w): q in Q}",
+    "completely_reachable": "every non-empty subset is the image of Q under some word",
+    "standardized": "b = cycle q->q+1 mod n; a deficiency-1 with excl(a)={0}, dupl(a)={a(0)}; and completely reachable (Casas-Volkov normal form)",
+    "don_conjecture": "every k-subset has a reaching word of length <= n(n-k) [OPEN]",
+    "zhu_theorem": "for standardized DFAs, length <= n(n-k)+n-1 [PROVED]"
+  },
+  "result": {
+    "n_studied": "3..8",
+    "total_standardized_cra_dfas": 39164,
+    "don_violations_found": 0,
+    "zhu_violations_found": 0,
+    "conclusion": "Don's conjecture HOLDS for every standardized CRA DFA with n<=8; the bound n(n-k) is tight (achieved with equality) but never exceeded. Zhu's proved bound also holds everywhere (sanity check)."
+  },
+  "per_n": {
+    "3": {
+      "standardized_cra_count": 4,
+      "don_violations": 0,
+      "zhu_violations": 0,
+      "don_conjecture_holds": true,
+      "zhu_bound_holds": true,
+      "don_bound_tight_certificate": {
+        "a": [
+          1,
+          1,
+          2
+        ],
+        "b": [
+          1,
+          2,
+          0
+        ],
+        "tight_subset_states": [
+          0
+        ],
+        "k": 1,
+        "shortest_reaching_word": "abbabb",
+        "word_length": 6,
+        "don_bound_n(n-k)": 6,
+        "word_reaches_subset_independently_verified": true
+      }
+    },
+    "4": {
+      "standardized_cra_count": 16,
+      "don_violations": 0,
+      "zhu_violations": 0,
+      "don_conjecture_holds": true,
+      "zhu_bound_holds": true,
+      "don_bound_tight_certificate": {
+        "a": [
+          1,
+          1,
+          2,
+          3
+        ],
+        "b": [
+          1,
+          2,
+          3,
+          0
+        ],
+        "tight_subset_states": [
+          0
+        ],
+        "k": 1,
+        "shortest_reaching_word": "abbbabbbabbb",
+        "word_length": 12,
+        "don_bound_n(n-k)": 12,
+        "word_reaches_subset_independently_verified": true
+      }
+    },
+    "5": {
+      "standardized_cra_count": 96,
+      "don_violations": 0,
+      "zhu_violations": 0,
+      "don_conjecture_holds": true,
+      "zhu_bound_holds": true,
+      "don_bound_tight_certificate": {
+        "a": [
+          1,
+          1,
+          2,
+          3,
+          4
+        ],
+        "b": [
+          1,
+          2,
+          3,
+          4,
+          0
+        ],
+        "tight_subset_states": [
+          0
+        ],
+        "k": 1,
+        "shortest_reaching_word": "abbbbabbbbabbbbabbbb",
+        "word_length": 20,
+        "don_bound_n(n-k)": 20,
+        "word_reaches_subset_independently_verified": true
+      }
+    },
+    "6": {
+      "standardized_cra_count": 552,
+      "don_violations": 0,
+      "zhu_violations": 0,
+      "don_conjecture_holds": true,
+      "zhu_bound_holds": true,
+      "don_bound_tight_certificate": {
+        "a": [
+          1,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "b": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          0
+        ],
+        "tight_subset_states": [
+          0
+        ],
+        "k": 1,
+        "shortest_reaching_word": "abbbbbabbbbbabbbbbabbbbbabbbbb",
+        "word_length": 30,
+        "don_bound_n(n-k)": 30,
+        "word_reaches_subset_independently_verified": true
+      }
+    },
+    "7": {
+      "standardized_cra_count": 4320,
+      "don_violations": 0,
+      "zhu_violations": 0,
+      "don_conjecture_holds": true,
+      "zhu_bound_holds": true,
+      "don_bound_tight_certificate": {
+        "a": [
+          1,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "b": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          0
+        ],
+        "tight_subset_states": [
+          0
+        ],
+        "k": 1,
+        "shortest_reaching_word": "abbbbbbabbbbbbabbbbbbabbbbbbabbbbbbabbbbbb",
+        "word_length": 42,
+        "don_bound_n(n-k)": 42,
+        "word_reaches_subset_independently_verified": true
+      }
+    },
+    "8": {
+      "standardized_cra_count": 34176,
+      "don_violations": 0,
+      "zhu_violations": 0,
+      "don_conjecture_holds": true,
+      "zhu_bound_holds": true,
+      "don_bound_tight_certificate": {
+        "a": [
+          1,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "b": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          0
+        ],
+        "tight_subset_states": [
+          0
+        ],
+        "k": 1,
+        "shortest_reaching_word": "abbbbbbbabbbbbbbabbbbbbbabbbbbbbabbbbbbbabbbbbbbabbbbbbb",
+        "word_length": 56,
+        "don_bound_n(n-k)": 56,
+        "word_reaches_subset_independently_verified": true
+      }
+    }
+  },
+  "seconds": 18.5
+}
