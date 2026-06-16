@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Iterative LLM Math — exact tooling for open problems</title>
+<meta name="description" content="Exact verifiers, bounded searches, and certificates for eight open mathematical problems, built iteratively. Not proofs — falsifiable computational artifacts."/>
+<meta name="color-scheme" content="dark light"/>
+<link rel="stylesheet" href="assets/styles.css"/>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13'>∑</text></svg>"/>
+</head>
+<body>
+<a class="skip" href="#portfolio">Skip to problems</a>
+<header class="site"><div class="wrap">
+  <p class="eyebrow">Iterative Local-LLM Research</p>
+  <h1>Exact tooling for eight open problems.</h1>
+  <p class="lede">Each problem here gets what the research methodology actually calls for:
+  an <strong>exact verifier</strong>, a <strong>bounded search or enumeration</strong>, and
+  <strong>reproducible certificates</strong> — falsifiable artifacts that survive contact with a
+  checker. These are computational research scaffolds and verified bounded results, built one
+  iteration at a time. They are <strong>not proofs</strong> of the conjectures, which remain open.</p>
+</div></header>
+
+<main class="wrap">
+  <div class="callout">
+    <strong>Honesty note.</strong> Every problem below is a famous <em>open</em> question. Nothing
+    here claims to solve one. The deliverable is tooling: an independent checker, an exact search to
+    a stated bound, and the structural data (congruence classes, infeasibility certificates,
+    small-instance classifications) that genuine progress is built from.
+  </div>
+
+  <h2 id="portfolio">The portfolio</h2>
+  <p class="muted">Ordered as the methodology recommends — shortest feedback loop first.</p>
+  <ul class="grid">
+    <li class="card">
+      <div class="row"><h3>Erdős–Straus</h3><span class="badge verified">verified to 2·10⁵</span></div>
+      <p>4/n = 1/x + 1/y + 1/z. Exact checker, identity + bounded-search solver, congruence split.</p>
+      <a href="erdos-straus.html">Open dossier →</a>
+    </li>
+    <li class="card">
+      <div class="row"><h3>Standardized reachable DFAs</h3><span class="badge planned">planned</span></div>
+      <p>Don's conjecture for standardized completely reachable DFAs — exhaustive small-n generation + shortest reaching words.</p>
+      <span class="muted">next iteration</span>
+    </li>
+    <li class="card">
+      <div class="row"><h3>Odd covering systems</h3><span class="badge planned">planned</span></div>
+      <p>Erdős–Selfridge: distinct odd moduli &gt; 1. Exact density arithmetic, SAT/ILP encodings.</p>
+      <span class="muted">queued</span>
+    </li>
+    <li class="card">
+      <div class="row"><h3>Optimal Golomb rulers</h3><span class="badge planned">planned</span></div>
+      <p>Branch-and-bound / CP-SAT for optimal marks, with infeasibility certificates below a length.</p>
+      <span class="muted">queued</span>
+    </li>
+    <li class="card">
+      <div class="row"><h3>Even Barker sequences</h3><span class="badge planned">planned</span></div>
+      <p>Binary sequences with bounded aperiodic autocorrelation — exhaustive search + symmetry breaking.</p>
+      <span class="muted">queued</span>
+    </li>
+    <li class="card">
+      <div class="row"><h3>Circulant Hadamard (Ryser)</h3><span class="badge planned">planned</span></div>
+      <p>±1 circulant H with HHᵀ = nI — orthogonality checker + bounded order search.</p>
+      <span class="muted">queued</span>
+    </li>
+    <li class="card">
+      <div class="row"><h3>Perfect cuboid</h3><span class="badge planned">planned</span></div>
+      <p>Integer box with integer face & space diagonals — primitive checker + bounded parameter search.</p>
+      <span class="muted">queued</span>
+    </li>
+    <li class="card">
+      <div class="row"><h3>Erdős–Moser</h3><span class="badge planned">planned</span></div>
+      <p>1ᵏ+2ᵏ+…+(m−1)ᵏ = mᵏ — congruence / valuation obstruction mining.</p>
+      <span class="muted">queued</span>
+    </li>
+  </ul>
+
+  <h2>The method</h2>
+  <p>Every problem follows the same loop: <strong>exact generation → independent verification →
+  congruence/obstruction mining</strong>. The verifier is always a separate codebase from the
+  generator, uses exact arithmetic only, and is the sole arbiter of truth. Partial, bounded, or
+  negative results count — and are reported as exactly that.</p>
+  <p class="muted">Source code: <a href="https://github.com/HaleMarshall/iterative-llm-math">github.com/HaleMarshall/iterative-llm-math</a></p>
+</main>
+
+<footer class="site"><div class="wrap">
+  <p>Built iteratively · exact arithmetic only · open problems, honest scaffolding</p>
+</div></footer>
+</body>
+</html>

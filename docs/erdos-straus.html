@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Erdős–Straus conjecture — Iterative LLM Math</title>
+<meta name="description" content="Exact verifier, fast solver, and congruence analysis for the Erdős–Straus conjecture 4/n = 1/x+1/y+1/z. Verified for all n up to 200000."/>
+<meta name="color-scheme" content="dark light"/>
+<link rel="stylesheet" href="assets/styles.css"/>
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <p class="eyebrow">Dossier 01 · Arithmetic track</p>
+  <h1>Erdős–Straus conjecture</h1>
+  <p class="lede">For every integer n ≥ 2, are there positive integers x, y, z with
+  <code>4/n = 1/x + 1/y + 1/z</code>? Believed true, verified past 10¹⁷, and <strong>open</strong>.</p>
+</div></header>
+
+<main class="wrap">
+  <div class="callout">
+    <strong>Status: open conjecture.</strong> This page reports an exact verifier, a fast solver, and
+    the congruence structure of the easy/hard split — verified bounded computation, <em>not</em> a proof.
+  </div>
+
+  <h2>What was built</h2>
+  <p>Three independent pieces, exact integer/rational arithmetic throughout:</p>
+  <ul>
+    <li><strong>Checker</strong> — <code>verify(n,x,y,z)</code> tests <code>4·xyz = n·(yz+xz+xy)</code>.
+      No floating point; it is the sole arbiter.</li>
+    <li><strong>Solver</strong> — O(1) parametric identities for n even, n divisible by 3, and
+      n ≡ 3 (mod 4); a bounded exact search (Simon's-favorite-factoring two-term split via divisors of
+      <code>q²</code>) for the residual hard class.</li>
+    <li><strong>Congruence split</strong> — exactly which residues are settled by an identity vs. fall
+      through to search.</li>
+  </ul>
+
+  <h2>Verified results</h2>
+  <div class="stat-row">
+    <div class="stat"><div class="n">199,999</div><div class="l">values n ∈ [2, 200000] checked</div></div>
+    <div class="stat"><div class="n">100%</div><div class="l">found a witness, all re-verified</div></div>
+    <div class="stat"><div class="n">166,666</div><div class="l">solved by an O(1) identity (⅚)</div></div>
+    <div class="stat"><div class="n">33,333</div><div class="l">solved by bounded search (⅙)</div></div>
+  </div>
+  <p class="muted">Full machine-readable run:
+  <a href="https://github.com/HaleMarshall/iterative-llm-math/blob/main/problems/erdos_straus/results/erdos_straus_results.json">erdos_straus_results.json</a>.
+  Every witness is re-checked against exact <code>Fraction</code> arithmetic and the independent
+  <code>verify</code>; 27 tests pin the checker, solver, identities, and the two-term split.</p>
+
+  <h2>The easy/hard congruence split</h2>
+  <p>The conjecture's difficulty is concentrated by residue class. Modulo 12, only two classes have no
+  O(1) identity and fall through to search:</p>
+  <table>
+    <tr><th>Residue r (mod 12)</th><th>Settled by</th></tr>
+    <tr><td>0, 2, 4, 6, 8, 10 (even)</td><td>identity <code>(m, m+1, m(m+1))</code></td></tr>
+    <tr><td>3, 9 (÷3)</td><td>identity <code>(m, 3m+1, 3m(3m+1))</code></td></tr>
+    <tr><td>7, 11 (≡ 3 mod 4)</td><td>identity <code>(k, nk+1, nk(nk+1))</code></td></tr>
+    <tr><td><strong>1, 5</strong></td><td><strong>bounded search</strong> (n ≡ 1 mod 4, coprime to 3)</td></tr>
+  </table>
+  <p>This reproduces the classical reduction: 4/n is trivially solvable unless n lies in those hard
+  residues — the ones the conjecture genuinely rests on. A worked witness:
+  <code>4/5 = 1/2 + 1/4 + 1/20</code>; <code>4/9973 = 1/2494 + 1/8290888 + 1/103108227451928</code>.</p>
+
+  <h2>Next iterations</h2>
+  <p>Per the methodology: push the identity library to cover more of the hard residues mod 840, then
+  search for a <em>new</em> infinite congruence family that shrinks the residual prime set — the most
+  plausible publishable artifact, short of the (open) conjecture itself.</p>
+
+  <a class="back" href="index.html">← all problems</a>
+</main>
+<footer class="site"><div class="wrap"><p>Erdős–Straus · exact arithmetic · open problem, verified bounded computation</p></div></footer>
+</body>
+</html>
