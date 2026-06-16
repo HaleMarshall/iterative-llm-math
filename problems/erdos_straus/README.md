@@ -35,6 +35,12 @@ residue_summary(12)        # which residues need search vs. an O(1) identity
 3. **Mordell frontier**: identities exist for all residues mod 840 except the six
    squares `{1, 11², 13², 17², 19², 23²}`. So the whole conjecture rests on primes
    in those six classes.
+4. **Mined identities** (`identity_mining.py`): for each residue class we fit
+   `x = 210k + c`, interpolate `y(k), z(k)`, and **machine-prove** the candidate by
+   expanding `4XYZ − n(YZ+XZ+XY)` to the zero polynomial in `k`, then integer-recheck.
+   This proved **82** residue-class identities, shrinking the search residual from
+   96 → 14 classes. The residual contains exactly the 6 open frontier classes (the
+   miner correctly finds *no* identity there), plus 8 needing richer families.
 
 ## Results
 

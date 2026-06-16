@@ -1,0 +1,72 @@
+{
+  "task": "mine certified polynomial identities for residue classes mod 840",
+  "status": "OPEN conjecture; identities are proved per residue CLASS, not the conjecture",
+  "targets_coprime_1mod4": 96,
+  "identities_mined_and_proved": 82,
+  "residual_count": 14,
+  "residual_residues": [
+    1,
+    121,
+    169,
+    241,
+    289,
+    313,
+    361,
+    409,
+    481,
+    529,
+    601,
+    649,
+    769,
+    793
+  ],
+  "mordell_frontier": [
+    1,
+    121,
+    169,
+    289,
+    361,
+    529
+  ],
+  "frontier_is_subset_of_residual": true,
+  "non_frontier_residual": [
+    241,
+    313,
+    409,
+    481,
+    601,
+    649,
+    769,
+    793
+  ],
+  "method": "x=210k+c offset search; y,z Lagrange-interpolated; identity proved by symbolic expansion to 0 in k; integer-rechecked to k=60",
+  "example_identities": {
+    "13": {
+      "modulus": 840,
+      "residue": 13,
+      "x": "210*k + 4",
+      "y": "58800*k**2 + 2030*k + 18",
+      "z": "5186160000*k**4 + 358092000*k**3 + 9297750*k**2 + 107590*k + 468",
+      "proved": true,
+      "rechecked_to_k": 60
+    },
+    "17": {
+      "modulus": 840,
+      "residue": 17,
+      "x": "210*k + 5",
+      "y": "58800*k**2 + 2590*k + 30",
+      "z": "2074464000*k**4 + 182750400*k**3 + 6082860*k**2 + 90650*k + 510",
+      "proved": true,
+      "rechecked_to_k": 60
+    },
+    "29": {
+      "modulus": 840,
+      "residue": 29,
+      "x": "210*k + 8",
+      "y": "58800*k**2 + 4270*k + 78",
+      "z": "5186160000*k**4 + 753228000*k**3 + 41049750*k**2 + 994910*k + 9048",
+      "proved": true,
+      "rechecked_to_k": 60
+    }
+  }
+}

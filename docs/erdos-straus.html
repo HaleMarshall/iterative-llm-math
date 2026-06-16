@@ -83,10 +83,34 @@
   residues — the ones the conjecture genuinely rests on. A worked witness:
   <code>4/5 = 1/2 + 1/4 + 1/20</code>; <code>4/9973 = 1/2494 + 1/8290888 + 1/103108227451928</code>.</p>
 
-  <h2>Next iterations</h2>
-  <p>Per the methodology: push the identity library to cover more of the hard residues mod 840, then
-  search for a <em>new</em> infinite congruence family that shrinks the residual prime set — the most
-  plausible publishable artifact, short of the (open) conjecture itself.</p>
+  <h2>Mined identities (Template Beta/Gamma)</h2>
+  <p>The capstone realizes the document's "mine patterns from verified data → turn a pattern into a
+  checked lemma" loop in code. For a residue class <code>n = 840k + r</code> we solve <code>4/n</code>
+  for small k, fit the first term as <code>x = 210k + c</code> (since x ≈ n/4), split the remainder
+  into <code>1/y + 1/z</code> per k, Lagrange-interpolate <code>y(k), z(k)</code>, and then
+  <strong>machine-prove</strong> the candidate by expanding
+  <code>4·X·Y·Z − (840k+r)·(YZ+XZ+XY)</code> to the zero polynomial in k — followed by an exact
+  integer re-check for many further k. Each accepted identity is a theorem about a residue class.</p>
+  <div class="stat-row">
+    <div class="stat"><div class="n">82</div><div class="l">residue-class identities mined &amp; proved</div></div>
+    <div class="stat"><div class="n">96 → 14</div><div class="l">search residue classes (of coprime ≡1 mod 4)</div></div>
+    <div class="stat"><div class="n">⊇ 6</div><div class="l">residual contains exactly the open frontier</div></div>
+  </div>
+  <p>A representative mined &amp; proved identity (residue 13 mod 840):</p>
+  <pre>x = 210k + 4
+y = 58800k² + 2030k + 18
+z = 5186160000k⁴ + 358092000k³ + 9297750k² + 107590k + 468
+   →  4/(840k+13) = 1/x + 1/y + 1/z   for every k ≥ 0  (proved)</pre>
+  <p>The miner returns <strong>no identity</strong> for the six frontier classes
+  <code>{1, 121, 169, 289, 361, 529}</code> — it does not fabricate one where none is known — so the
+  14-class residual is exactly those six open classes plus eight that this x ≈ n/4 family doesn't
+  capture (richer two-parameter families, future work). Full run:
+  <a href="https://github.com/HaleMarshall/iterative-llm-math/blob/main/problems/erdos_straus/results/identity_mining_results.json">identity_mining_results.json</a>.</p>
+
+  <h2>Where this leaves the problem</h2>
+  <p>The conjecture is reduced, with machine-checked certificates, to <strong>primes in 14 residue
+  classes mod 840</strong> (and theoretically to the 6 Mordell classes). All such primes below 10⁶ are
+  verified solvable. The conjecture itself remains <strong>open</strong> — nothing here is a proof of it.</p>
 
   <a class="back" href="index.html">← all problems</a>
 </main>
