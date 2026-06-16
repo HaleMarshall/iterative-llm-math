@@ -1,82 +1,38 @@
 {
-  "problem": "Erdos-Straus conjecture (4/n = 1/x+1/y+1/z)",
-  "status": "OPEN; this is computational verification + congruence structure, NOT a proof",
-  "verified_range": [
-    2,
-    200000
-  ],
-  "checked": 199999,
-  "solved": 199999,
-  "failures": [],
-  "solved_by_O1_identity": 166666,
-  "solved_by_search": 33333,
-  "all_solved": true,
-  "seconds": 5.54,
-  "residue_summary_mod12": {
-    "modulus": 12,
-    "handled_by_identity": [
-      0,
-      2,
-      3,
-      4,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11
-    ],
-    "fall_through_to_search": [
-      1,
-      5
-    ]
+  "problem": "Erdos-Straus conjecture (4/n = 1/x + 1/y + 1/z)",
+  "status": "OPEN. This is verified bounded computation + the reduction structure, NOT a proof.",
+  "literature_record": "Computationally verified past 10^17 (not by this project).",
+  "this_project_verified": {
+    "all_n_up_to": 1000000,
+    "all_n_solved": true,
+    "primes_up_to": 1000000,
+    "primes_checked": 78498,
+    "hard_primes_searched": 39175,
+    "primes_all_solved": true
   },
-  "residue_summary_mod24": {
-    "modulus": 24,
-    "handled_by_identity": [
-      0,
-      2,
-      3,
-      4,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      14,
-      15,
-      16,
-      18,
-      19,
-      20,
-      21,
-      22,
-      23
-    ],
-    "fall_through_to_search": [
+  "key_lemma_prime_reduction": "If m|n and 4/m = 1/a+1/b+1/c then 4/n = 1/(a*n/m)+1/(b*n/m)+1/(c*n/m). So it suffices to solve 4/p for the smallest prime factor p of n. p in {2,3} or p = 3 mod 4 have O(1) identities; only primes p = 1 mod 4 need search.",
+  "mordell_frontier": {
+    "statement": "Mordell's identities solve 4/p for every residue mod 840 except {1,121,169,289,361,529} = {1,11^2,13^2,17^2,19^2,23^2}. The conjecture reduces to primes in those six classes.",
+    "hard_primes_in_frontier_classes_below_1e6": 2370,
+    "frontier_residues": [
       1,
-      5,
-      13,
-      17
+      121,
+      169,
+      289,
+      361,
+      529
     ]
   },
   "example_witnesses": {
-    "2": [
-      1,
-      2,
-      2
-    ],
-    "3": [
-      1,
-      4,
-      12
-    ],
     "5": [
       2,
       4,
       20
+    ],
+    "25": [
+      10,
+      20,
+      100
     ],
     "67": [
       17,
@@ -88,20 +44,21 @@
       85096,
       1974822872
     ],
-    "9241": [
-      2312,
-      3052180,
-      958976642920
+    "9973": [
+      2494,
+      8290888,
+      103108227451928
     ],
     "100003": [
       25001,
       2500175004,
       6250875048126225012
     ],
-    "199999": [
-      50000,
-      9999950001,
-      99999000012499950000
+    "999983": [
+      249996,
+      249991750069,
+      62495875102311369754692
     ]
-  }
+  },
+  "seconds": 61.4
 }

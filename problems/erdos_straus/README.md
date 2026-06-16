@@ -16,23 +16,40 @@ residue_summary(12)        # which residues need search vs. an O(1) identity
 ```
 
 - **`verify(n,x,y,z)`** — the checker: `4·xyz == n·(yz+xz+xy)`, integer-only.
-- **`solve(n)`** — O(1) identities for n even / divisible by 3 / ≡ 3 (mod 4); a
-  bounded exact search for the residual class (n ≡ 1 mod 4, coprime to 3). The
-  two-term split uses `(py−q)(pz−q) = q²`, so it scans divisors of `q²` rather
-  than every candidate denominator.
-- **`verify_range` / `residue_summary`** — bounded verification and the easy/hard split.
+- **`solve(n)`** — O(1) identities (n even / ÷3 / ≡ 3 mod 4) + a bounded exact
+  search using the `(py−q)(pz−q) = q²` split (divisors of `q²`, not every denominator).
+- **`witness(n)`** — solves via the **prime reduction**: reduce to the smallest
+  prime factor p, solve `4/p`, scale by `n/p`. Search is invoked (and memoized)
+  only on primes p ≡ 1 (mod 4).
+- **`verify_up_to` / `verify_primes_up_to`** — bounded verification (all n, or all
+  primes ⇒ all n by the reduction).
+- **`hard_prime_residues`** — distribution of hard primes over residues mod 840,
+  surfacing the Mordell frontier `{1, 121, 169, 289, 361, 529}`.
+
+## The structure (what makes this "complete")
+
+1. **Reduction to primes** (exact, unit-tested): `m | n` and `4/m = 1/a+1/b+1/c`
+   ⟹ `4/n = 1/(a·n/m)+1/(b·n/m)+1/(c·n/m)`. So the conjecture collapses to primes.
+2. Primes `2, 3` and `p ≡ 3 (mod 4)` have O(1) identities ⟹ only **primes
+   `p ≡ 1 (mod 4)`** ever need search.
+3. **Mordell frontier**: identities exist for all residues mod 840 except the six
+   squares `{1, 11², 13², 17², 19², 23²}`. So the whole conjecture rests on primes
+   in those six classes.
 
 ## Results
 
-All n ∈ [2, 200000] have a re-verified witness: ⅚ via an O(1) identity, ⅙ via
-bounded search — matching the residue analysis (only n ≡ 1, 5 mod 12 fall
-through). See [`results/erdos_straus_results.json`](results/erdos_straus_results.json).
+Every n ∈ [2, 10⁶] has a re-verified witness; equivalently all 78,498 primes ≤ 10⁶
+are certified (39,175 hard primes searched; 2,370 in the frontier classes). See
+[`results/erdos_straus_results.json`](results/erdos_straus_results.json).
+*(The literature has verified the conjecture past 10¹⁷; the value here is the
+tooling and reduction structure, not the record. The conjecture remains open.)*
 
 ## Tests
 
 ```bash
-pytest tests/ -q     # 27 tests
+pytest tests/ -q     # 32 tests
 ```
 
 Witnesses are re-checked against exact `Fraction` arithmetic and the independent
-checker; `split_two` is cross-checked against a brute-force scan.
+checker; the prime-reduction scaling is verified as an exact identity; `split_two`
+is cross-checked against a brute scan; the frontier residues are pinned to the six squares.

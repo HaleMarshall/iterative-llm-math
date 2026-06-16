@@ -135,6 +135,149 @@ def solve(n: int, max_x: int | None = None) -> tuple[int, int, int] | None:
     return None
 
 
+# --- the reduction to primes (the key theoretical lever) --------------------
+def smallest_prime_factor(n: int) -> int:
+    """The smallest prime dividing n (n itself if n is prime)."""
+    if n % 2 == 0:
+        return 2
+    d = 3
+    while d * d <= n:
+        if n % d == 0:
+            return d
+        d += 2
+    return n
+
+
+def is_hard_prime(n: int) -> bool:
+    """A prime p is 'hard' iff p ≡ 1 (mod 4): p = 2, 3, or p ≡ 3 (mod 4) all have
+    O(1) identities, so only primes ≡ 1 (mod 4) ever require search."""
+    return n > 3 and n % 4 == 1 and smallest_prime_factor(n) == n
+
+
+def witness(n: int, cache: dict | None = None) -> tuple[int, int, int] | None:
+    """A witness for 4/n via the prime reduction.
+
+    Classical fact (exact, verifiable): if m | n and 4/m = 1/a+1/b+1/c then
+    4/n = 1/(a·n/m)+1/(b·n/m)+1/(c·n/m). So it suffices to solve 4/p for the
+    smallest prime factor p of n and scale by n/p. For p ∈ {2,3} or p ≡ 3 (mod 4)
+    an O(1) identity applies; only primes p ≡ 1 (mod 4) hit the bounded search —
+    and those are memoized in `cache`, so a whole range costs one search per
+    distinct hard prime.
+    """
+    if n < 2:
+        return None
+    p = smallest_prime_factor(n)
+    base = identity(p)
+    if base is None:                         # p is a hard prime (≡ 1 mod 4)
+        if cache is not None and p in cache:
+            base = cache[p]
+        else:
+            base = solve(p)
+            if cache is not None and base is not None:
+                cache[p] = base
+    if base is None:
+        return None
+    t = n // p
+    a, b, c = base
+    return tuple(sorted((a * t, b * t, c * t)))
+
+
+@dataclass
+class PrimeReductionReport:
+    hi: int
+    checked: int
+    solved: int
+    hard_primes_searched: int   # distinct primes ≡ 1 (mod 4) actually searched
+    failures: list
+
+    @property
+    def all_solved(self) -> bool:
+        return not self.failures
+
+
+def verify_up_to(hi: int) -> PrimeReductionReport:
+    """Verify 4/n for every n in [2, hi] using the prime reduction, re-checking
+    every scaled witness with the independent `verify`. Bounded search runs once
+    per distinct hard prime (memoized)."""
+    cache: dict = {}
+    failures, solved = [], 0
+    for n in range(2, hi + 1):
+        w = witness(n, cache)
+        if w is not None and verify(n, *w):
+            solved += 1
+        else:
+            failures.append(n)
+    return PrimeReductionReport(hi, hi - 1, solved, len(cache), failures)
+
+
+def _primes_up_to(limit: int):
+    """Sieve of Eratosthenes -> list of primes <= limit."""
+    if limit < 2:
+        return []
+    sieve = bytearray([1]) * (limit + 1)
+    sieve[0] = sieve[1] = 0
+    for i in range(2, isqrt(limit) + 1):
+        if sieve[i]:
+            sieve[i * i::i] = bytearray(len(sieve[i * i::i]))
+    return [i for i in range(limit + 1) if sieve[i]]
+
+
+@dataclass
+class PrimeVerifyReport:
+    hi: int
+    primes: int
+    hard_primes: int          # primes ≡ 1 (mod 4), the ones needing search
+    solved: int
+    failures: list
+
+    @property
+    def all_solved(self) -> bool:
+        return not self.failures
+
+
+def verify_primes_up_to(hi: int) -> PrimeVerifyReport:
+    """Verify 4/p for every prime p <= hi (identity for p ∈ {2,3} or p ≡ 3 mod 4;
+    bounded search for p ≡ 1 mod 4), re-checking each witness. By the prime
+    reduction this certifies 4/n for **every** n <= hi."""
+    failures, solved, hard = [], 0, 0
+    for p in _primes_up_to(hi):
+        if p % 4 == 1 and p > 3:
+            hard += 1
+            w = solve(p)
+        else:
+            w = identity(p)
+        if w is not None and verify(p, *w):
+            solved += 1
+        else:
+            failures.append(p)
+    primes = solved + len(failures)
+    return PrimeVerifyReport(hi, primes, hard, solved, failures)
+
+
+def hard_prime_residues(hi: int, modulus: int = 840) -> dict:
+    """Distribution of the hard primes (p ≡ 1 mod 4, p <= hi) by residue mod
+    `modulus`. Mordell's identities solve 4/p for every residue except
+    {1, 121, 169, 289, 361, 529} (mod 840) — the classes the conjecture truly
+    rests on. This reports how the searched primes fall across residues so the
+    Mordell frontier is visible in the data."""
+    counts: dict[int, int] = {}
+    mordell_hard = {1, 121, 169, 289, 361, 529}
+    in_frontier = 0
+    for p in _primes_up_to(hi):
+        if p % 4 == 1 and p > 3:
+            r = p % modulus
+            counts[r] = counts.get(r, 0) + 1
+            if r in mordell_hard:
+                in_frontier += 1
+    return {
+        "modulus": modulus,
+        "hard_primes": sum(counts.values()),
+        "distinct_residues_hit": len(counts),
+        "mordell_frontier_residues": sorted(mordell_hard),
+        "hard_primes_in_frontier_classes": in_frontier,
+    }
+
+
 @dataclass
 class RangeReport:
     lo: int

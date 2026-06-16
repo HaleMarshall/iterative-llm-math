@@ -15,12 +15,17 @@ import pytest
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from erdos_straus import (
+    hard_prime_residues,
     identity,
+    is_hard_prime,
     residue_summary,
     solve,
     split_two,
     verify,
+    verify_primes_up_to,
     verify_range,
+    verify_up_to,
+    witness,
 )
 
 
@@ -80,6 +85,58 @@ def test_split_two_is_exact(p, q):
         y, z = res
         assert Fraction(1, y) + Fraction(1, z) == Fraction(p, q)
         assert 0 < y <= z
+
+
+def test_prime_reduction_scaling_is_an_exact_identity():
+    # The crux lemma: 4/m = 1/a+1/b+1/c  =>  4/(m*t) = 1/(at)+1/(bt)+1/(ct).
+    for m in (5, 7, 13, 67):
+        a, b, c = solve(m)
+        for t in (1, 2, 3, 10, 97):
+            assert verify(m * t, a * t, b * t, c * t)
+
+
+def test_witness_solves_via_prime_reduction():
+    for n in list(range(2, 3000)) + [25, 65, 85, 221, 999983, 1000000]:
+        w = witness(n, {})
+        assert w is not None and verify(n, *w)
+        assert w[0] <= w[1] <= w[2]
+
+
+def test_only_primes_one_mod_four_are_hard():
+    assert is_hard_prime(13) and is_hard_prime(97)
+    assert not is_hard_prime(7)        # ≡ 3 mod 4 -> identity
+    assert not is_hard_prime(2) and not is_hard_prime(3)
+    assert not is_hard_prime(25)       # composite (covered by reducing to 5)
+    # every value that lacked an O(1) identity AND is prime must be ≡ 1 mod 4
+    for n in range(5, 2000):
+        if identity(n) is None and witness(n, {}) and _is_prime(n):
+            assert n % 4 == 1
+
+
+def _is_prime(n):
+    if n < 2:
+        return False
+    i = 2
+    while i * i <= n:
+        if n % i == 0:
+            return False
+        i += 1
+    return True
+
+
+def test_verify_primes_certifies_all_n_below_bound():
+    # all primes <= N solved  ==>  all n <= N solvable (by the reduction)
+    rp = verify_primes_up_to(50_000)
+    assert rp.all_solved
+    an = verify_up_to(50_000)
+    assert an.all_solved and an.solved == an.checked
+
+
+def test_mordell_frontier_residues_are_the_six_squares():
+    d = hard_prime_residues(100_000, 840)
+    assert d["mordell_frontier_residues"] == [1, 121, 169, 289, 361, 529]
+    # = {1, 11^2, 13^2, 17^2, 19^2, 23^2} mod 840
+    assert sorted({r * r % 840 for r in (1, 11, 13, 17, 19, 23)}) == d["mordell_frontier_residues"]
 
 
 def test_split_two_matches_a_brute_scan():

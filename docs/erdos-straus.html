@@ -23,28 +23,51 @@
   </div>
 
   <h2>What was built</h2>
-  <p>Three independent pieces, exact integer/rational arithmetic throughout:</p>
+  <p>A complete computational treatment, exact integer/rational arithmetic throughout:</p>
   <ul>
     <li><strong>Checker</strong> — <code>verify(n,x,y,z)</code> tests <code>4·xyz = n·(yz+xz+xy)</code>.
       No floating point; it is the sole arbiter.</li>
     <li><strong>Solver</strong> — O(1) parametric identities for n even, n divisible by 3, and
       n ≡ 3 (mod 4); a bounded exact search (Simon's-favorite-factoring two-term split via divisors of
-      <code>q²</code>) for the residual hard class.</li>
-    <li><strong>Congruence split</strong> — exactly which residues are settled by an identity vs. fall
-      through to search.</li>
+      <code>q²</code>) for the residual class.</li>
+    <li><strong>Prime reduction</strong> — the key lever: the whole conjecture collapses to primes,
+      and in fact to primes ≡ 1 (mod 4).</li>
+    <li><strong>Mordell frontier</strong> — the six residue classes mod 840 where the difficulty
+      genuinely lives, surfaced from the data.</li>
   </ul>
+
+  <h2>The reduction to primes</h2>
+  <div class="callout" style="border-left-color:var(--ok);background:color-mix(in oklab,var(--ok) 9%,transparent)">
+    <strong>Lemma (exact, unit-tested).</strong> If <code>m | n</code> and
+    <code>4/m = 1/a + 1/b + 1/c</code>, then
+    <code>4/n = 1/(a·n/m) + 1/(b·n/m) + 1/(c·n/m)</code>.
+  </div>
+  <p>So it suffices to solve <code>4/p</code> for the <em>smallest prime factor</em> p of n, and scale.
+  Since p ∈ {2, 3} and every p ≡ 3 (mod 4) have O(1) identities, <strong>the only inputs that ever
+  reach the search are primes p ≡ 1 (mod 4)</strong> — and each is solved once and memoized, so an
+  entire range costs one search per distinct hard prime.</p>
 
   <h2>Verified results</h2>
   <div class="stat-row">
-    <div class="stat"><div class="n">199,999</div><div class="l">values n ∈ [2, 200000] checked</div></div>
-    <div class="stat"><div class="n">100%</div><div class="l">found a witness, all re-verified</div></div>
-    <div class="stat"><div class="n">166,666</div><div class="l">solved by an O(1) identity (⅚)</div></div>
-    <div class="stat"><div class="n">33,333</div><div class="l">solved by bounded search (⅙)</div></div>
+    <div class="stat"><div class="n">10⁶</div><div class="l">every n ∈ [2, 10⁶] has a re-verified witness</div></div>
+    <div class="stat"><div class="n">78,498</div><div class="l">primes ≤ 10⁶ certified (⇒ all n by reduction)</div></div>
+    <div class="stat"><div class="n">39,175</div><div class="l">hard primes (≡ 1 mod 4) actually searched</div></div>
+    <div class="stat"><div class="n">2,370</div><div class="l">of those in the 6 Mordell frontier classes</div></div>
   </div>
   <p class="muted">Full machine-readable run:
   <a href="https://github.com/HaleMarshall/iterative-llm-math/blob/main/problems/erdos_straus/results/erdos_straus_results.json">erdos_straus_results.json</a>.
   Every witness is re-checked against exact <code>Fraction</code> arithmetic and the independent
-  <code>verify</code>; 27 tests pin the checker, solver, identities, and the two-term split.</p>
+  <code>verify</code>; 32 tests pin the checker, solver, identities, the two-term split, and the
+  prime-reduction scaling lemma. (The literature has verified the conjecture past 10¹⁷ — far beyond
+  this; the contribution here is the tooling and reduction structure, not the record.)</p>
+
+  <h2>The Mordell frontier</h2>
+  <p>Mordell's identities solve <code>4/p</code> for every residue mod 840 <em>except</em> the six
+  squares <code>{1, 121, 169, 289, 361, 529} = {1, 11², 13², 17², 19², 23²}</code>. Combined with the
+  prime reduction, the entire Erdős–Straus conjecture rests on primes
+  <code>p ≡ 1, 11², 13², 17², 19², 23² (mod 840)</code>. Below 10⁶ there are 2,370 such primes; all are
+  solved by search here. Pushing the identity library to cover the non-frontier residues — shrinking
+  the searched set toward exactly those six classes — is the next refinement.</p>
 
   <h2>The easy/hard congruence split</h2>
   <p>The conjecture's difficulty is concentrated by residue class. Modulo 12, only two classes have no
